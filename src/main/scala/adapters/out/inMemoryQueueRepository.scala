@@ -11,5 +11,6 @@ class InMemoryQueueRepository extends QueueTimeRepository:
 
     def findAll(): List[QueueTime]= queueTimes.toList
 
-    def save(queueTime: QueueTime): Unit=
+    //To delete if saving queueTimes is not necessary
+    def save(queueTime: QueueTime): Unit= 
         queueTimes += queueTime

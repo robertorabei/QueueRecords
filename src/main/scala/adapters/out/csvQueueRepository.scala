@@ -33,6 +33,7 @@ class csvQueueRepository(filename: String) extends QueueTimeRepository:
 
     def findAll(): List[QueueTime] = queueTimes.toList
 
+    //To delete if saving queueTimes is not necessary
     def save(queueTime: QueueTime): Unit = 
         val newLine: String = 
             s"${queueTime.rideId.toString()}" +
@@ -45,8 +46,5 @@ class csvQueueRepository(filename: String) extends QueueTimeRepository:
         val fileWriter: FileWriter = new FileWriter(filename)
         fileWriter.write(newLine)
         fileWriter.close()
-        
-
-
 
 
