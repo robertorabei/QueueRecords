@@ -5,7 +5,7 @@ import domain.{QueueTime, QueueTimeRepository}
 // 1) Determine the current state of EACH ride from latest record by date and timestamp 
 class QueueTimeService(repo: QueueTimeRepository):
     private def filterQueueTimes(queueTimes: List[QueueTime]): List[QueueTime]=
-        queueTimes.maxByOption(_.date) match
+        queueTimes.maxByOption(q => (q.date, q.timeStamp)) match
             case Some(latest) => 
                 queueTimes
                     .filter(q => q.date == latest.date && q.timeStamp == latest.timeStamp)
@@ -14,10 +14,11 @@ class QueueTimeService(repo: QueueTimeRepository):
                 List.empty[QueueTime]
     
     def printInfo(ride: QueueTime): Unit =
-        println(s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}")
+        println(s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName} ${ride.date} ${ride.timeStamp}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}")
 
     def exists(requestedId: Int): Boolean = 
         listCurrentStates().exists(_.rideId == requestedId)
+
 
     def listCurrentStates(): List[QueueTime] = 
         val currentQueueTimes: List[QueueTime] = filterQueueTimes(repo.findAll())
