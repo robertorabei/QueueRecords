@@ -19,7 +19,6 @@ class QueueTimeService(repo: QueueTimeRepository):
     def exists(requestedId: Int): Boolean = 
         listCurrentStates().exists(_.rideId == requestedId)
 
-
     def listCurrentStates(): List[QueueTime] = 
         val currentQueueTimes: List[QueueTime] = filterQueueTimes(repo.findAll())
         currentQueueTimes.sortBy(_.rideId)
@@ -28,6 +27,16 @@ class QueueTimeService(repo: QueueTimeRepository):
         val currentQueueTimes: List[QueueTime] = listCurrentStates()
         currentQueueTimes.filter(q => q.rideId == requestedId).head
 
-                    
+    def recommendRides(): List[QueueTime] = 
+        val currentQueueTimes: List[QueueTime] = listCurrentStates()
+        val openRides: List[QueueTime] = currentQueueTimes.filter(q => q.isOpen == true && q.waitTime >= 0)
+        val sortedWaitTimes = openRides.sortBy(_.waitTime)
+        openRides.length match {
+            case n if n >= 3 => sortedWaitTimes.take(3)
+            case 2           => sortedWaitTimes.take(2)
+            case 1           => sortedWaitTimes.take(1) 
+            case 0           => List.empty[QueueTime]
+        }
+
 
 
