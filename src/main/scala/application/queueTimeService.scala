@@ -12,9 +12,21 @@ class QueueTimeService(repo: QueueTimeRepository):
                     .distinct
             case None => 
                 List.empty[QueueTime]
+    
+    def printInfo(ride: QueueTime): Unit =
+        println(s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}")
+
+    def exists(requestedId: Int): Boolean = 
+        listCurrentStates().exists(_.rideId == requestedId)
 
     def listCurrentStates(): List[QueueTime] = 
         val currentQueueTimes: List[QueueTime] = filterQueueTimes(repo.findAll())
         currentQueueTimes.sortBy(_.rideId)
+
+    def findCurrentState(requestedId: Int): QueueTime =
+        val currentQueueTimes: List[QueueTime] = listCurrentStates()
+        currentQueueTimes.filter(q => q.rideId == requestedId).head
+
+                    
 
 

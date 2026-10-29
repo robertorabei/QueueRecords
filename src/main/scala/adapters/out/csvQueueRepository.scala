@@ -3,7 +3,7 @@ package adapters.out
 import domain.{QueueTime, QueueTimeRepository}
 import scala.collection.mutable.ListBuffer
 import java.io.FileWriter
-import com.github.tototoshi.csv._
+import com.github.tototoshi.csv._ 
 import java.io.File
 
 
