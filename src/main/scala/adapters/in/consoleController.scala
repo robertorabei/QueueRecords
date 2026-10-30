@@ -1,21 +1,21 @@
 package adapters.in
 
-import application.QueueTimeService
+import application.RideService
 
-class ConsoleController(service: QueueTimeService):
+class ConsoleController(service: RideService):
     def run(): Unit= 
         var running = true
         while running do 
-            println("\n1. List current rides states")
-            println("\n2. Find a ride (with ID)")
+            println("\n1. List current rides")
+            println("\n2. Find a ride (requires ID)")
             println("\n3. Recommend three rides")
             println("\n9. Exit")
             print(">")
             scala.io.StdIn.readLine() match
                 case "1" => 
-                    val queueTimes = service.listCurrentStates()
-                    if queueTimes.isEmpty then print("No rides currently")
-                    else queueTimes.foreach(ride => service.printInfo(ride))
+                    val rides = service.listCurrentStates()
+                    if rides.isEmpty then print("No rides currently")
+                    else rides.foreach(ride => service.printInfo(ride))
                 case "2" =>
                     println("ID:")
                     val requestedRideID: Int = scala.io.StdIn.readInt() 

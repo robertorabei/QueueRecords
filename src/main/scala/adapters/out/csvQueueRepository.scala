@@ -1,19 +1,19 @@
 package adapters.out
 
-import domain.{QueueTime, QueueTimeRepository}
+import domain.{Ride, RideRepository}
 import scala.collection.mutable.ListBuffer
 import java.io.FileWriter
 import com.github.tototoshi.csv._ 
 import java.io.File
 
 
-class csvQueueRepository(filename: String) extends QueueTimeRepository:
-    private val queueTimes: ListBuffer[QueueTime] = ListBuffer.empty[QueueTime]
+class csvRideRepository(filename: String) extends RideRepository:
+    private val rides: ListBuffer[Ride] = ListBuffer.empty[Ride]
     private val reader = CSVReader.open(new File(filename))
 
-    private def load(): List[QueueTime] = 
+    private def load(): List[Ride] = 
         val values = reader.all().drop(1).map {values =>
-            QueueTime(
+            Ride(
                 rideId    = values(0).toInt,
                 rideName  = values(1),
                 isOpen    = values(2).toBoolean,
@@ -22,22 +22,21 @@ class csvQueueRepository(filename: String) extends QueueTimeRepository:
                 timeStamp = values(5)
             )
         }
-        queueTimes.addAll(values)
-        queueTimes.toList
+        rides.addAll(values)
+        rides.toList
 
-    def findAll(): List[QueueTime] = load()
+    def findAll(): List[Ride] = load()
 
-
-    //To delete if saving queueTimes is not necessary 
+    //To delete if saving rides is not necessary 
     //replace with CSVWriter
-    def save(queueTime: QueueTime): Unit = 
+    def save(newRide: Ride): Unit = 
         val newLine: String = 
-            s"${queueTime.rideId.toString()}" +
-            s",${queueTime.rideName}" +
-            s",${queueTime.isOpen.toString().toUpperCase()}" + 
-            s",${queueTime.waitTime.toString()}" + 
-            s",${queueTime.date}" +
-            s",${queueTime.timeStamp}"
+            s"${newRide.rideId.toString()}" +
+            s",${newRide.rideName}" +
+            s",${newRide.isOpen.toString().toUpperCase()}" + 
+            s",${newRide.waitTime.toString()}" + 
+            s",${newRide.date}" +
+            s",${newRide.timeStamp}"
 
         val fileWriter: FileWriter = new FileWriter(filename)
         fileWriter.write(newLine)
