@@ -4,12 +4,20 @@ import application.RideService
 import domain.{Ride, RideRepository}
 
 import scala.io.Source
+import java.io.FileNotFoundException
+
+
 
 
 object Main extends App:
-    val path = java.nio.file.Paths.get("src/main/scala/ressources/queuetimes.csv")
-    val repo = new csvRideRepository(path.toString)
+    try 
+        val path = java.nio.file.Paths.get("src/main/scala/ressources/queuetimes.csv")
+        val repo = new csvRideRepository(path.toString)
 
-    val service = new RideService(repo)
-    val controller = new ConsoleController(service)
-    controller.run()
+        val service = new RideService(repo)
+        val controller = new ConsoleController(service)
+        controller.run()
+    catch {
+        case e: FileNotFoundException =>
+            println("[ERROR] File not found.")
+    }
