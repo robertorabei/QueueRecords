@@ -34,3 +34,5 @@ metals.sbt
 
 # Individual files
 todo.txt
+output.txt
+test.txt

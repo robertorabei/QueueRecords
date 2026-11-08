@@ -15,7 +15,7 @@ class ConsoleController(service: RideService):
                 case "1" => 
                     val rides = service.listCurrentStates()
                     if rides.isEmpty then print("No rides currently")
-                    else rides.foreach(ride => service.printInfo(ride))
+                    else rides.foreach(ride => println(service.printInfo(ride)))
                 case "2" =>
                     println("ID:")
                     val requestedRideID: Int = scala.io.StdIn.readInt() 
@@ -29,7 +29,7 @@ class ConsoleController(service: RideService):
                     println("Here are 3 rides we recommend:")
                     val recommendedRides = service.recommendRides()
                     if recommendedRides.isEmpty then print("No open rides currently.")
-                    else recommendedRides.foreach(ride => service.printInfo(ride))
+                    else recommendedRides.foreach(ride => println(service.printInfo(ride)))
 
                 case "9" => 
                     running = false

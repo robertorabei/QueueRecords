@@ -1,4 +1,4 @@
-import adapters.in.ConsoleController
+import adapters.in.{ConsoleController, BatchExecution}
 import adapters.out.{csvRideRepository, InMemoryRideRepository}
 import application.RideService
 import domain.{Ride, RideRepository}
@@ -15,8 +15,8 @@ object Main extends App:
         val repo = new csvRideRepository(path.toString)
 
         val service = new RideService(repo)
-        val controller = new ConsoleController(service)
-        controller.run()
+        val controller = new BatchExecution(service)
+        controller.run("src/main/scala/ressources/test.txt")
     catch {
         case e: FileNotFoundException =>
             println("[ERROR] File not found.")
