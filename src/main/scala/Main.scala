@@ -1,18 +1,15 @@
 import adapters.in.{ConsoleController, BatchExecution}
-import adapters.out.{csvRideRepository, InMemoryRideRepository}
+import adapters.out.{CSVRideRepository, InMemoryRideRepository}
 import application.{RideService, RideServiceImpl}
 import domain.{Ride, RideRepository}
 
 import scala.io.Source
 import java.io.FileNotFoundException
 
-
-
-
-object Main extends App:
+object Main:
     try 
         val path = java.nio.file.Paths.get("src/main/scala/ressources/queuetimes.csv")
-        val repo = new csvRideRepository(path.toString)
+        val repo = new CSVRideRepository(path.toString)
 
         val rideService: RideService = new RideServiceImpl(repo)
         val controller = new BatchExecution(rideService)

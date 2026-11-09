@@ -2,10 +2,6 @@ package application
 
 import domain.{Ride, RideRepository}
 
-// 1) Determine the current state of EACH ride from latest record by date and timestamp --> listCurrentStates()
-// 2) Find current state of requested ride with ID --> findCurrentState(requestedId: Int)
-// 3) Recommend at most 3 open rides based on waitTime and groupedBy id --> recommendRides()
-
 class RideServiceImpl(repo: RideRepository) extends RideService:
     private def filterRides(rides: List[Ride]): List[Ride]=
         rides.maxByOption(q => (q.date, q.timeStamp)) match

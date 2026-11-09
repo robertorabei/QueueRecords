@@ -5,8 +5,6 @@ import scala.io.Source
 import java.io.FileWriter
 import java.io.File
 
-// Doit lire un fichier txt 
-
 class BatchExecution(service: RideService):
     def run(filename: String): Unit=
         var requestNumber: Int = 1
@@ -33,7 +31,7 @@ class BatchExecution(service: RideService):
                             fileWriter.write((s"This ride: $requestedRideID does not exist.\n"))
 
                     case "recommend" =>
-                        fileWriter.write("Here are 3 rides we recommend:\n")
+                        fileWriter.write("Here are rides we recommend:\n")
                         val recommendedRides = service.recommendRides()
                         if recommendedRides.isEmpty then fileWriter.write("No open rides currently.\n")
                         else recommendedRides.foreach(ride => fileWriter.write(service.printInfo(ride) + "\n"))

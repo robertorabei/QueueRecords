@@ -7,7 +7,7 @@ import com.github.tototoshi.csv._
 import java.io.File
 
 
-class csvRideRepository(filename: String) extends RideRepository:
+class CSVRideRepository(filename: String) extends RideRepository:
     private val rides: ListBuffer[Ride] = ListBuffer.empty[Ride]
     private val reader = CSVReader.open(new File(filename))
 
