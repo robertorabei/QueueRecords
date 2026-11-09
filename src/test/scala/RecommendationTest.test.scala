@@ -41,6 +41,20 @@ object RecommendationTestData {
         Ride(4, "Ride number 3", true, 5, "2026-09-25", "16:00"),
         Ride(6, "Ride number 4", true, 5, "2026-09-25", "16:00"),
     )
+
+    val ridesTest5: List[Ride] = List(
+        Ride(1, "Ride number 1", true, 10, "2026-09-25", "15:00"),
+        Ride(2, "Ride number 2", false, 10, "2026-09-25", "16:00"),
+        Ride(3, "Ride number 3", true, 15, "2026-09-25", "16:00"),
+        Ride(4, "Ride number 3", true, 0, "2026-09-24", "16:00"),
+        Ride(5, "Ride number 3", true, -1, "2026-09-25", "16:00"),
+        Ride(6, "Ride number 4", true, 5, "2026-09-25", "16:00")
+    )
+
+    val expectationTest5: List[Ride] = List(
+        Ride(6, "Ride number 4", true, 5, "2026-09-25", "16:00"),
+        Ride(3, "Ride number 3", true, 15, "2026-09-25", "16:00")
+    )
 }
 
 class RecommendationSuite extends AnyFunSuite {
@@ -78,9 +92,16 @@ class RecommendationSuite extends AnyFunSuite {
 
         ridesTest4.foreach(repo.save)
         val result: List[Ride] = rideService.recommendRides()
-        result.foreach(println)
         assert(result == expectationTest4)
     }
+
+    test("testing all conditions with a final test") {
+        val repo: RideRepository = new InMemoryRideRepository()
+        val rideService: RideService = new RideServiceImpl(repo)
+
+        ridesTest5.foreach(repo.save)
+        val result: List[Ride] = rideService.recommendRides()
+        assert(result == expectationTest5)
 }
 
 
