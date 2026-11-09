@@ -4,7 +4,6 @@ import application.RideService
 import scala.io.Source
 import java.io.FileWriter
 import java.io.File
-import scala.util.control.Breaks._
 
 // Doit lire un fichier txt 
 
@@ -17,7 +16,7 @@ class BatchExecution(service: RideService):
         try {
             for (line <- source.getLines().takeWhile(_ != "exit")) do
                 val lineContent = line.split(" ")
-                fileWriter.write(s"Answer for request number $requestNumber:\n")
+                fileWriter.write(s"[Answer for request number $requestNumber]\n")
 
                 lineContent(0) match 
                     case "list" =>
@@ -42,6 +41,7 @@ class BatchExecution(service: RideService):
                     case _ =>
                             fileWriter.write(s"Unknown command: ${lineContent(0)}\n")
                 requestNumber += 1
+                fileWriter.write("\n")
             fileWriter.write("Exiting...\n")
         } finally {
             fileWriter.close()
