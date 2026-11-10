@@ -11,9 +11,6 @@ class RideServiceImpl(repo: RideRepository) extends RideService:
                     .distinct
             case None => 
                 List.empty[Ride]
-    
-    def printInfo(ride: Ride): String =
-        s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName} ${ride.date} ${ride.timeStamp}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}"
 
     def exists(requestedId: Int): Boolean = 
         listCurrentStates().exists(_.rideId == requestedId)

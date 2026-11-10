@@ -1,11 +1,15 @@
 package adapters.in
 
 import application.RideService
+import domain.Ride
 import scala.io.Source
 import java.io.FileWriter
 import java.io.File
 
-class BatchExecution(service: RideService):
+class BatchAdapter(service: RideService):
+    private def formatInfo(ride: Ride): String =
+        s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName} ${ride.timeStamp}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}\n"
+
     def run(filename: String): Unit=
         var requestNumber: Int = 1
         val source = Source.fromFile(filename)
@@ -20,13 +24,13 @@ class BatchExecution(service: RideService):
                     case "list" =>
                         val rides = service.listCurrentStates()
                         if rides.isEmpty then fileWriter.write("No rides currently \n")
-                        else rides.foreach(ride => fileWriter.write(service.printInfo(ride) + "\n"))
+                        else rides.foreach(ride => fileWriter.write(formatInfo(ride)))
 
                     case "find" => 
                         val requestedRideID = lineContent(1).toInt
                         if (service.exists(requestedRideID))
                             val requestedRide = service.findCurrentState(requestedRideID)
-                            fileWriter.write(service.printInfo(requestedRide) + "\n")
+                            fileWriter.write(formatInfo(requestedRide) + "\n")
                         else 
                             fileWriter.write((s"This ride: $requestedRideID does not exist.\n"))
 
@@ -34,7 +38,7 @@ class BatchExecution(service: RideService):
                         fileWriter.write("Here are rides we recommend:\n")
                         val recommendedRides = service.recommendRides()
                         if recommendedRides.isEmpty then fileWriter.write("No open rides currently.\n")
-                        else recommendedRides.foreach(ride => fileWriter.write(service.printInfo(ride) + "\n"))
+                        else recommendedRides.foreach(ride => fileWriter.write(formatInfo(ride)))
 
                     case _ =>
                             fileWriter.write(s"Unknown command: ${lineContent(0)}\n")

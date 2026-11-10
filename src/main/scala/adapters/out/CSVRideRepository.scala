@@ -11,13 +11,14 @@ class CSVRideRepository(filename: String) extends RideRepository:
     private val rides: ListBuffer[Ride] = ListBuffer.empty[Ride]
     private val reader = CSVReader.open(new File(filename))
 
+    // Transforming received data into workable data types
     private def load(): List[Ride] = 
         val values = reader.all().drop(1).map {values =>
             Ride(
-                rideId    = values(0).toInt,
+                rideId    = values.head.toInt,
                 rideName  = values(1),
                 isOpen    = values(2).toBoolean,
-                waitTime  = values(3).toInt,
+                waitTime  = values(3).toShort,
                 date      = values(4),
                 timeStamp = values(5)
             )
@@ -27,8 +28,7 @@ class CSVRideRepository(filename: String) extends RideRepository:
 
     def findAll(): List[Ride] = load()
 
-    //To delete if saving rides is not necessary 
-    //replace with CSVWriter
+    // Not used in this project since it was not asked but did implement it
     def save(newRide: Ride): Unit = 
         val newLine: String = 
             s"${newRide.rideId.toString()}" +
