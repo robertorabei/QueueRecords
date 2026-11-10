@@ -22,14 +22,14 @@ class BatchAdapter(service: RideService):
 
                 lineContent(0) match 
                     case "list" =>
-                        val rides = service.listCurrentStates()
+                        val rides = service.listCurrentRides()
                         if rides.isEmpty then fileWriter.write("No rides currently \n")
                         else rides.foreach(ride => fileWriter.write(formatInfo(ride)))
 
                     case "find" => 
                         val requestedRideID = lineContent(1).toInt
                         if (service.exists(requestedRideID))
-                            val requestedRide = service.findCurrentState(requestedRideID)
+                            val requestedRide = service.findRide(requestedRideID)
                             fileWriter.write(formatInfo(requestedRide) + "\n")
                         else 
                             fileWriter.write((s"This ride: $requestedRideID does not exist.\n"))

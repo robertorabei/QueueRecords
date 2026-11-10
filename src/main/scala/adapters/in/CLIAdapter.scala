@@ -17,14 +17,14 @@ class CLIAdapter(service: RideService):
             print("> ")
             scala.io.StdIn.readLine() match
                 case "1" => 
-                    val rides = service.listCurrentStates()
+                    val rides = service.listCurrentRides()
                     if rides.isEmpty then println("No rides currently\n")
                     else rides.foreach(ride => println(formatRide(ride)))
                 case "2" =>
                     print("ID: ")
                     val requestedRideID: Int = scala.io.StdIn.readInt() 
                     if (service.exists(requestedRideID))
-                        val requestedRide = service.findCurrentState(requestedRideID)
+                        val requestedRide = service.findRide(requestedRideID)
                         println(formatRide(requestedRide))
                     else 
                         println(s"This ride: ${requestedRideID} does not exist.\n")

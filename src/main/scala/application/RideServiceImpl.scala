@@ -13,18 +13,19 @@ class RideServiceImpl(repo: RideRepository) extends RideService:
                 List.empty[Ride]
 
     def exists(requestedId: Int): Boolean = 
-        listCurrentStates().exists(_.rideId == requestedId)
+        listCurrentRides().exists(_.rideId == requestedId)
 
-    def listCurrentStates(): List[Ride] = 
-        val currentRides: List[Ride] = filterRides(repo.findAll())
+    def listCurrentRides(): List[Ride] =
+        val allRides: List[Ride] = repo.findAll()
+        val currentRides: List[Ride] = filterRides(allRides)
         currentRides.sortBy(_.rideId)
 
-    def findCurrentState(requestedId: Int): Ride =
-        val currentRides: List[Ride] = listCurrentStates()
+    def findRide(requestedId: Int): Ride =
+        val currentRides: List[Ride] = listCurrentRides()
         currentRides.filter(q => q.rideId == requestedId).head
 
     def recommendRides(): List[Ride] = 
-        val currentRides: List[Ride] = listCurrentStates()
+        val currentRides: List[Ride] = listCurrentRides()
         val openRides: List[Ride] = currentRides.filter(q => q.isOpen && q.waitTime >= 0)
         
         openRides.sortBy(_.waitTime).take(3)
