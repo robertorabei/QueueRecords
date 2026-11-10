@@ -14,6 +14,12 @@ object Main extends App:
         val rideService: RideService = new RideServiceImpl(repo)
         val controller = new CLIAdapter(rideService)
         controller.run()
+
+        // If BatchAdapter is wanted
+        // val inputFile = java.nio.file.Paths.get("src/main/scala/ressources/test.txt")
+        // val controller = new BatchAdapter(rideService)
+        // controller.run(inputFile.toString)
+
     catch {
         case e: FileNotFoundException =>
             println("[ERROR] File not found.")

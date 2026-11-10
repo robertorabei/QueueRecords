@@ -5,7 +5,7 @@ import domain.Ride
 
 class CLIAdapter(service: RideService):
     private def formatRide(ride: Ride): String =
-        s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName} ${ride.date} ${ride.timeStamp}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}\n"
+        s"[${if ride.isOpen then "OPEN" else "CLOSED"}] ${ride.rideId} ${ride.rideName} ${ride.timeStamp}. Waiting time: ${if ride.waitTime >= 0 then ride.waitTime else "UNKNOWN"}\n"
 
     def run(): Unit=
         var running = true
